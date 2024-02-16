@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 
 import '../services/notification_services.dart';
 import '../services/theme_services.dart';
+import 'add_task_page.dart';
 import 'theme.dart';
 import 'widgets/button.dart';
 
@@ -34,23 +35,26 @@ class _HomePageState extends State<HomePage> {
       appBar: _appBar(),
       body: Column(children: [
         _addTaskBar(),
-        Container(
-          margin: const EdgeInsets.only(top: 20, left: 20),
-          child: DatePicker(DateTime.now(),
-              height: 100,
-              width: 80,
-              initialSelectedDate: DateTime.now(),
-              selectionColor: primaryClr,
-              selectedTextColor: Colors.white,
-              dateTextStyle: GoogleFonts.lato(textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.grey)),
-              dayTextStyle: GoogleFonts.lato(textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.grey)),
-              monthTextStyle: GoogleFonts.lato(textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey)),
-              onDateChange: (date) {
-            _selectedDate = date;
-          }),
-        )
+        _addDateBar(),
       ]),
     );
+  }
+
+  _addDateBar() {
+    return Container(
+        margin: const EdgeInsets.only(top: 20, left: 20),
+        child: DatePicker(DateTime.now(),
+            height: 100,
+            width: 80,
+            initialSelectedDate: _selectedDate,
+            selectionColor: primaryClr,
+            selectedTextColor: Colors.white,
+            dateTextStyle: GoogleFonts.lato(textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.grey)),
+            dayTextStyle: GoogleFonts.lato(textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.grey)),
+            monthTextStyle: GoogleFonts.lato(textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey)),
+            onDateChange: (date) {
+          _selectedDate = date;
+        }));
   }
 
   Widget _addTaskBar() {
@@ -66,7 +70,11 @@ class _HomePageState extends State<HomePage> {
               Text("Today", style: headingStyle),
             ],
           ),
-          MyButton(label: "+ Add Task", onTap: () {}),
+          MyButton(
+              label: "+ Add Task",
+              onTap: () {
+                Get.to(() => const AddTaskPage());
+              }),
         ],
       ),
     );
@@ -85,8 +93,6 @@ class _HomePageState extends State<HomePage> {
             body: Get.isDarkMode ? "Activated Light Theme" : "Activated Dark Theme",
           );
           notifyHelper.scheduledNotification();
-          // NotifyHelper.showSimpleNotification(title: "Theme is changed", body: "This is a simple notification", payload: "This is a simple data");
-          log('cek 123');
         },
         child: Icon(
           Get.isDarkMode ? Icons.wb_sunny_outlined : Icons.nightlight_round,
