@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../controllers/task_controller.dart';
+import '../models/task.dart';
 import 'theme.dart';
 import 'widgets/button.dart';
 import 'widgets/input_field.dart';
@@ -26,6 +28,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   String _selectedRepeat = 'None';
   List<String> repeatList = ["None", "Daily"];
   int _selectedColor = 0;
+  final _taskController = Get.put(TaskController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -201,6 +204,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
       Get.snackbar('Required', 'All fields are required!',
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.white,
+          colorText: pinkClr,
           icon: const Icon(
             Icons.warning,
             color: Colors.red,
@@ -276,7 +280,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
   }
 
   _showTimePicker() {
-    log('cek nilai $_startTime');
     return showTimePicker(
       initialEntryMode: TimePickerEntryMode.input,
       context: context,
@@ -288,17 +291,17 @@ class _AddTaskPageState extends State<AddTaskPage> {
   }
 
   void _addTaskToDb() async {
-    // int val = await _taskController.addTask(
-    //     task: Task(
-    //         note: _noteController.text,
-    //         title: _titleController.text,
-    //         date: DateFormat.yMd().format(_selectedDate),
-    //         startTime: _startTime,
-    //         endTime: _endTime,
-    //         remiind: _selectedRemind,
-    //         repeat: _selectedRepeat,
-    //         color: _selectedColor,
-    //         isCompleted: 0));
+    int val = await _taskController.addTask(
+        task: Task(
+            note: _noteController.text,
+            title: _titleController.text,
+            date: DateFormat.yMd().format(_selectedDate),
+            startTime: _startTime,
+            endTime: _endTime,
+            remiind: _selectedRemind,
+            repeat: _selectedRepeat,
+            color: _selectedColor,
+            isCompleted: 0));
     // print('My id is $val');
   }
 }
